@@ -14,12 +14,6 @@ class AkunStackPage extends StatefulWidget {
 class _AkunStackPage extends State<AkunStackPage> {
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -31,7 +25,7 @@ class _AkunStackPage extends State<AkunStackPage> {
             ),
           ),
         ),
-        elevation: 0,
+        elevation: 2,
       ),
       body: Stack(
         children: [
@@ -45,7 +39,7 @@ class _AkunStackPage extends State<AkunStackPage> {
                   ),
                   ListTile(
                     title: Text("Logout"),
-                    trailing: Icon(Icons.chevron_right),
+                    trailing: Icon(Icons.settings_power_rounded),
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text("See you soon :)")));

@@ -1,5 +1,6 @@
 import 'package:dms_portal/common/format_date.dart';
 import 'package:dms_portal/models/delivery_order.dart';
+import 'package:dms_portal/page/action/do_search_page.dart';
 import 'package:dms_portal/page/do_detail_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +60,13 @@ class _ExportStackPage extends State<ExportStackPage> {
           ),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                print("clicked");
+                Navigator.pushAndRemoveUntil(context,
+                    MaterialPageRoute(builder: (context) {
+                  return DoSearchPage(title: "Cari Delivery Order");
+                }), (route) => false);
+              },
               icon: Icon(
                 Icons.search,
                 color: Colors.black,
