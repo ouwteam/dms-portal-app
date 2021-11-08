@@ -23,16 +23,24 @@ class _ImportStackPage extends State<ImportStackPage> {
       },
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           backgroundColor: Colors.white,
-          title: Center(
-            child: Text(
-              widget.title,
-              style: TextStyle(
+          title: Text(
+            widget.title,
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.search,
                 color: Colors.black,
               ),
             ),
-          ),
-          elevation: 0,
+          ],
+          elevation: 2,
         ),
         body: RefreshIndicator(
           onRefresh: () async {},
