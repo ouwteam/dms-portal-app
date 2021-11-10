@@ -69,7 +69,7 @@ class _MainPage extends State<MainPage> {
           ),
         ),
         child: BottomNavigationBar(
-          elevation: 2,
+          elevation: 1,
           backgroundColor: Colors.white,
           selectedItemColor: Colors.blue,
           unselectedItemColor: Colors.grey[500],
