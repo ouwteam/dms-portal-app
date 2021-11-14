@@ -14,15 +14,30 @@ class HomeStackPage extends StatefulWidget {
 
 class _HomeStackPage extends State<HomeStackPage> {
   Position? _currentPosition;
-  String? _currentAddress;
+  String? _currentAddress = "";
 
   _getCurrentLocation() async {
-    Position? pos = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.best,
-      forceAndroidLocationManager: true,
-    );
-    String address = "${pos.latitude},${pos.longitude}";
+    Position? pos;
+    try {
+      pos = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best,
+        forceAndroidLocationManager: true,
+      );
+    } catch (e) {
+      snackAlert(
+        context,
+        "Your device is not support geolocator system!",
+        AlertType.error,
+      );
 
+      setState(() {
+        _currentAddress = "Not support";
+      });
+
+      return;
+    }
+
+    String address = "${pos.latitude},${pos.longitude}";
     try {
       print("we get the pos");
       List<Placemark> places = await placemarkFromCoordinates(
@@ -41,9 +56,10 @@ class _HomeStackPage extends State<HomeStackPage> {
       print(e.toString());
 
       snackAlert(
-          context,
-          "Your device is not support geocoding system. We show you the coordinates!",
-          AlertType.error);
+        context,
+        "Your device is not support geocoding system. We show you the coordinates!",
+        AlertType.error,
+      );
     }
 
     setState(() {
@@ -95,8 +111,7 @@ class _HomeStackPage extends State<HomeStackPage> {
                               'Location',
                               style: Theme.of(context).textTheme.caption,
                             ),
-                            if (_currentPosition != null &&
-                                _currentAddress != null)
+                            if (_currentAddress != null)
                               Text(_currentAddress!,
                                   style: Theme.of(context).textTheme.bodyText2),
                           ],
