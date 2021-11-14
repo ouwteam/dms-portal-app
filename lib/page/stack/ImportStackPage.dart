@@ -1,7 +1,6 @@
 import 'package:dms_portal/models/down_payment.dart';
 import 'package:dms_portal/page/action/dp_search_page.dart';
 import 'package:dms_portal/page/dp_detail_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ImportStackPage extends StatefulWidget {
@@ -14,6 +13,14 @@ class ImportStackPage extends StatefulWidget {
 }
 
 class _ImportStackPage extends State<ImportStackPage> {
+  final TextEditingController _filter = TextEditingController();
+  String _searchText = "";
+  Icon _searchIcon = new Icon(Icons.search);
+  Widget _appBarTitle = new Text(
+    "Import",
+    style: TextStyle(color: Colors.black),
+  );
+
   List<DownPayment> orders = [
     DownPayment(
       blNumber: "SITGJTBT7929391",
@@ -37,6 +44,40 @@ class _ImportStackPage extends State<ImportStackPage> {
     ),
   ];
 
+  _ImportStackPage() {
+    _filter.addListener(() {
+      if (_filter.text.isEmpty) {
+        setState(() {
+          _searchText = "";
+        });
+      } else {
+        setState(() {
+          _searchText = _filter.text;
+        });
+      }
+    });
+  }
+
+  void _searchPressed() {
+    setState(() {
+      if (this._searchIcon.icon == Icons.search) {
+        this._searchIcon = new Icon(Icons.close);
+        this._appBarTitle = new TextField(
+          controller: _filter,
+          decoration: new InputDecoration(
+              prefixIcon: new Icon(Icons.search), hintText: 'Search...'),
+        );
+      } else {
+        this._searchIcon = new Icon(Icons.search);
+        this._appBarTitle = new Text(
+          widget.title,
+          style: TextStyle(color: Colors.black),
+        );
+        _filter.clear();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return NotificationListener(
@@ -51,25 +92,12 @@ class _ImportStackPage extends State<ImportStackPage> {
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: Colors.white,
-          title: Text(
-            widget.title,
-            style: TextStyle(
-              color: Colors.black,
-            ),
-          ),
+          title: _appBarTitle,
           actions: [
             IconButton(
-              onPressed: () {
-                print("clicked");
-                Navigator.pushAndRemoveUntil(context,
-                    MaterialPageRoute(builder: (context) {
-                  return DpSearchPage(title: "Cari Delivery Order");
-                }), (route) => false);
-              },
-              icon: Icon(
-                Icons.search,
-                color: Colors.black,
-              ),
+              color: Colors.black,
+              onPressed: _searchPressed,
+              icon: _searchIcon,
             ),
           ],
           elevation: 2,

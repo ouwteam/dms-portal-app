@@ -22,7 +22,7 @@ class _DpDetailPage extends State<DpDetailPage> {
             tabs: [
               Tab(text: "Delivery Order"),
               Tab(text: "Party"),
-              Tab(text: "Release"),
+              Tab(text: "Return"),
             ],
           ),
           centerTitle: true,
