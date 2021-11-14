@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:dms_portal/common/snack_alert.dart';
 import 'package:dms_portal/models/data_source.dart';
 import 'package:dms_portal/page/main_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'dart:math' as math;
@@ -23,20 +20,21 @@ class _LoginPage extends State<LoginPage> {
   DataSource? _selectedApi;
   Position? _currentPosition;
   String? _currentAddress;
+  List<DataSource> dataSources = [];
 
   _getCurrentLocation() async {
-    _currentPosition = await Geolocator.getCurrentPosition(
+    Position? pos = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.best,
       forceAndroidLocationManager: true,
     );
 
-    if (_currentPosition != null) {
-      print("we get the pos");
-      List<Placemark> places = await placemarkFromCoordinates(
-        _currentPosition!.latitude,
-        _currentPosition!.longitude,
-      );
+    print("we get the pos");
+    List<Placemark> places = await placemarkFromCoordinates(
+      pos.latitude,
+      pos.longitude,
+    );
 
+    setState(() {
       _currentAddress = [
         places[0].country,
         places[0].administrativeArea,
@@ -44,31 +42,33 @@ class _LoginPage extends State<LoginPage> {
         places[0].street,
         places[0].postalCode,
       ].join(", ");
-    }
+
+      _currentPosition = pos;
+    });
   }
 
   @override
   void initState() {
     super.initState();
+    dataSources = [
+      DataSource(
+        id: 1,
+        apiCode: "JKT",
+        apiName: "Depo Jakarta",
+        apiAddr: "",
+        apiKey: "",
+      ),
+      DataSource(
+        id: 2,
+        apiCode: "SBY",
+        apiName: "Depo Surabaya",
+        apiAddr: "",
+        apiKey: "",
+      ),
+    ];
+
     _getCurrentLocation();
   }
-
-  List<DataSource> dataSources = [
-    DataSource(
-      id: 1,
-      apiCode: "JKT",
-      apiName: "Depo Jakarta",
-      apiAddr: "",
-      apiKey: "",
-    ),
-    DataSource(
-      id: 2,
-      apiCode: "SBY",
-      apiName: "Depo Surabaya",
-      apiAddr: "",
-      apiKey: "",
-    ),
-  ];
 
   @override
   Widget build(BuildContext context) {
