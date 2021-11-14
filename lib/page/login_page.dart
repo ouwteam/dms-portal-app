@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:dms_portal/common/snack_alert.dart';
 import 'package:dms_portal/models/data_source.dart';
 import 'package:dms_portal/page/main_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'dart:math' as math;
+import 'package:geolocator/geolocator.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key, required this.title}) : super(key: key);
@@ -17,6 +21,37 @@ class _LoginPage extends State<LoginPage> {
   String _username = "";
   String _password = "";
   DataSource? _selectedApi;
+  Position? _currentPosition;
+  String? _currentAddress;
+
+  _getCurrentLocation() async {
+    _currentPosition = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.best,
+      forceAndroidLocationManager: true,
+    );
+
+    if (_currentPosition != null) {
+      print("we get the pos");
+      List<Placemark> places = await placemarkFromCoordinates(
+        _currentPosition!.latitude,
+        _currentPosition!.longitude,
+      );
+
+      _currentAddress = [
+        places[0].country,
+        places[0].administrativeArea,
+        places[0].subAdministrativeArea,
+        places[0].street,
+        places[0].postalCode,
+      ].join(", ");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
 
   List<DataSource> dataSources = [
     DataSource(
@@ -61,6 +96,7 @@ class _LoginPage extends State<LoginPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      Text("Address : $_currentAddress"),
                       SizedBox(height: 66),
                       Text(
                         widget.title,
