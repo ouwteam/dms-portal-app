@@ -18,34 +18,7 @@ class _LoginPage extends State<LoginPage> {
   String _username = "";
   String _password = "";
   DataSource? _selectedApi;
-  Position? _currentPosition;
-  String? _currentAddress;
   List<DataSource> dataSources = [];
-
-  _getCurrentLocation() async {
-    Position? pos = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.best,
-      forceAndroidLocationManager: true,
-    );
-
-    print("we get the pos");
-    List<Placemark> places = await placemarkFromCoordinates(
-      pos.latitude,
-      pos.longitude,
-    );
-
-    setState(() {
-      _currentAddress = [
-        places[0].country,
-        places[0].administrativeArea,
-        places[0].subAdministrativeArea,
-        places[0].street,
-        places[0].postalCode,
-      ].join(", ");
-
-      _currentPosition = pos;
-    });
-  }
 
   @override
   void initState() {
@@ -66,8 +39,6 @@ class _LoginPage extends State<LoginPage> {
         apiKey: "",
       ),
     ];
-
-    _getCurrentLocation();
   }
 
   @override
@@ -96,8 +67,6 @@ class _LoginPage extends State<LoginPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text("Address : $_currentAddress"),
-                      SizedBox(height: 66),
                       Text(
                         widget.title,
                         style: TextStyle(

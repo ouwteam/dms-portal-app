@@ -1,5 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 
 class HomeStackPage extends StatefulWidget {
   final String title;
@@ -11,6 +12,41 @@ class HomeStackPage extends StatefulWidget {
 }
 
 class _HomeStackPage extends State<HomeStackPage> {
+  Position? _currentPosition;
+  String? _currentAddress;
+
+  _getCurrentLocation() async {
+    Position? pos = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.best,
+      forceAndroidLocationManager: true,
+    );
+
+    print("we get the pos");
+    List<Placemark> places = await placemarkFromCoordinates(
+      pos.latitude,
+      pos.longitude,
+    );
+
+    setState(() {
+      _currentAddress = [
+        places[0].country,
+        places[0].administrativeArea,
+        places[0].subAdministrativeArea,
+        places[0].street,
+        places[0].postalCode,
+      ].join(", ");
+
+      _currentPosition = pos;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _getCurrentLocation();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +54,7 @@ class _HomeStackPage extends State<HomeStackPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Home Page"),
+            Text("Home Page, address : $_currentAddress"),
           ],
         ),
       ),
