@@ -104,66 +104,10 @@ class _LoginPage extends State<LoginPage> {
                           fontSize: 24,
                         ),
                       ),
-                      SizedBox(height: 24),
                       _buildUsernameTextField(),
-                      SizedBox(height: 24),
                       _buildPasswordTextField(),
-                      SizedBox(height: 24),
                       _buildDataSourceOptions(),
-                      SizedBox(height: 24),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Lupa password?"),
-                          Container(
-                            height: 40,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                if (_username == "") {
-                                  snackAlert(
-                                    context,
-                                    "Username is required",
-                                    AlertType.error,
-                                  );
-                                  return;
-                                }
-
-                                if (_selectedApi == null) {
-                                  snackAlert(
-                                    context,
-                                    "Data source is required",
-                                    AlertType.error,
-                                  );
-                                  return;
-                                }
-
-                                snackAlert(
-                                  context,
-                                  "Welcome $_username with source ${_selectedApi?.apiName}",
-                                  AlertType.info,
-                                );
-                                Navigator.pushAndRemoveUntil(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return MainPage(title: "Main Page");
-                                }), (route) => false);
-                              },
-                              child: Row(
-                                children: [
-                                  Text("Login"),
-                                  SizedBox(width: 5),
-                                  Transform.rotate(
-                                    angle: math.pi / 1,
-                                    child: Icon(
-                                      Icons.arrow_back_rounded,
-                                      color: Colors.white,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      )
+                      _buildBottomAction()
                     ],
                   ),
                 ),
@@ -176,36 +120,43 @@ class _LoginPage extends State<LoginPage> {
   }
 
   Widget _buildUsernameTextField() {
-    return TextField(
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
-        hintText: "Username",
+    return Container(
+      child: TextField(
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          hintText: "Username",
+        ),
+        onChanged: (String value) {
+          setState(() {
+            _username = value;
+          });
+        },
       ),
-      onChanged: (String value) {
-        setState(() {
-          _username = value;
-        });
-      },
+      margin: const EdgeInsets.only(top: 24),
     );
   }
 
   Widget _buildPasswordTextField() {
-    return TextField(
-      obscureText: true,
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
-        hintText: "Password",
+    return Container(
+      child: TextField(
+        obscureText: true,
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          hintText: "Password",
+        ),
+        onChanged: (String value) {
+          setState(() {
+            _password = value;
+          });
+        },
       ),
-      onChanged: (String value) {
-        setState(() {
-          _password = value;
-        });
-      },
+      margin: const EdgeInsets.only(top: 24),
     );
   }
 
   Widget _buildDataSourceOptions() {
     return Container(
+      margin: const EdgeInsets.only(top: 24),
       child: Stack(
         children: [
           Text(
@@ -213,10 +164,11 @@ class _LoginPage extends State<LoginPage> {
             style: TextStyle(fontSize: 18),
           ),
           Container(
-            margin: const EdgeInsets.only(top: 28),
+            margin: const EdgeInsets.only(top: 24),
             child: Column(
               children: dataSources
                   .map((e) => RadioListTile<DataSource>(
+                        contentPadding: EdgeInsets.all(0),
                         title: Text(e.apiName),
                         value: e,
                         groupValue: _selectedApi,
@@ -229,6 +181,65 @@ class _LoginPage extends State<LoginPage> {
                   .toList(),
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBottomAction() {
+    return Container(
+      margin: const EdgeInsets.only(top: 24),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text("Lupa password?"),
+          Container(
+            height: 40,
+            child: ElevatedButton(
+              onPressed: () {
+                if (_username == "") {
+                  snackAlert(
+                    context,
+                    "Username is required",
+                    AlertType.error,
+                  );
+                  return;
+                }
+
+                if (_selectedApi == null) {
+                  snackAlert(
+                    context,
+                    "Data source is required",
+                    AlertType.error,
+                  );
+                  return;
+                }
+
+                snackAlert(
+                  context,
+                  "Welcome $_username with source ${_selectedApi?.apiName}",
+                  AlertType.info,
+                );
+                Navigator.pushAndRemoveUntil(context,
+                    MaterialPageRoute(builder: (context) {
+                  return MainPage(title: "Main Page");
+                }), (route) => false);
+              },
+              child: Row(
+                children: [
+                  Text("Login"),
+                  SizedBox(width: 5),
+                  Transform.rotate(
+                    angle: math.pi / 1,
+                    child: Icon(
+                      Icons.arrow_back_rounded,
+                      color: Colors.white,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );

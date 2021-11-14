@@ -1,3 +1,4 @@
+import 'package:dms_portal/models/down_payment.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +12,29 @@ class ImportStackPage extends StatefulWidget {
 }
 
 class _ImportStackPage extends State<ImportStackPage> {
+  List<DownPayment> orders = [
+    DownPayment(
+      blNumber: "SITGJTBT7929391",
+      consigneeCode: "CSG-001",
+      consigneeName: "PT. Bandung Lautan Api",
+      containerSize: 20,
+      customerCode: "SIT",
+      partyQty: 2,
+      vesselName: "ACX Diamond",
+      voyageNo: "211N",
+    ),
+    DownPayment(
+      blNumber: "SITGJTBT7923910",
+      consigneeCode: "CSG-029",
+      consigneeName: "PT. Krakatoa Steel",
+      containerSize: 20,
+      customerCode: "SIT",
+      partyQty: 4,
+      vesselName: "ACX Diamond",
+      voyageNo: "211N",
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return NotificationListener(
@@ -33,7 +57,13 @@ class _ImportStackPage extends State<ImportStackPage> {
           ),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                print("clicked");
+                // Navigator.pushAndRemoveUntil(context,
+                //     MaterialPageRoute(builder: (context) {
+                //   return DoSearchPage(title: "Cari Delivery Order");
+                // }), (route) => false);
+              },
               icon: Icon(
                 Icons.search,
                 color: Colors.black,
@@ -49,12 +79,50 @@ class _ImportStackPage extends State<ImportStackPage> {
               Column(
                 children: [
                   Column(
-                    children: ListTile.divideTiles(context: context, tiles: [
-                      ListTile(
-                        title: Text("Profile"),
-                        trailing: Icon(Icons.chevron_right),
+                    children: ListTile.divideTiles(
+                      context: context,
+                      tiles: orders.map(
+                        (DownPayment downPayment) => ListTile(
+                          onTap: () {
+                            // Navigator.pushAndRemoveUntil(context,
+                            //     MaterialPageRoute(builder: (context) {
+                            //   return DoDetailPage(title: "Delivery Order");
+                            // }), (route) => false);
+                          },
+                          tileColor: orders.indexOf(downPayment) % 2 == 0
+                              ? Colors.grey[100]
+                              : Colors.white,
+                          trailing: Icon(Icons.navigate_next),
+                          title: Container(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(height: 10),
+                                Text(downPayment.blNumber),
+                                SizedBox(height: 5),
+                                Text(
+                                  downPayment.consigneeName,
+                                  style: TextStyle(fontSize: 13),
+                                ),
+                                Text(
+                                  [downPayment.vesselName, downPayment.voyageNo]
+                                      .join(" - "),
+                                  style: TextStyle(fontSize: 13),
+                                ),
+                                SizedBox(height: 10),
+                                // Row(
+                                //   children: [
+                                //     Text("1"),
+                                //     Text("2"),
+                                //   ],
+                                // )
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
-                    ]).toList(),
+                    ).toList(),
                   ),
                 ],
               ),
