@@ -189,10 +189,14 @@ class _LoginPage extends State<LoginPage> {
                   "Welcome $_username with source ${_selectedApi?.apiName}",
                   AlertType.info,
                 );
-                Navigator.pushAndRemoveUntil(context,
-                    MaterialPageRoute(builder: (context) {
-                  return MainPage(title: "Main Page");
-                }), (route) => false);
+
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return MainPage(title: "Main Page");
+                  }),
+                  (route) => false,
+                );
               },
               child: Row(
                 children: [
