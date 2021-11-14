@@ -12,6 +12,7 @@ class ImportStackPage extends StatefulWidget {
 }
 
 class _ImportStackPage extends State<ImportStackPage> {
+  late FocusNode searchFocusNode;
   final TextEditingController _filter = TextEditingController();
   String _searchText = "";
   Icon _searchIcon = new Icon(Icons.search);
@@ -43,6 +44,18 @@ class _ImportStackPage extends State<ImportStackPage> {
     ),
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    searchFocusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    searchFocusNode.dispose();
+  }
+
   _ImportStackPage() {
     _filter.addListener(() {
       if (_filter.text.isEmpty) {
@@ -63,9 +76,12 @@ class _ImportStackPage extends State<ImportStackPage> {
         this._searchIcon = new Icon(Icons.close);
         this._appBarTitle = new TextField(
           controller: _filter,
+          focusNode: searchFocusNode,
           decoration: new InputDecoration(
               prefixIcon: new Icon(Icons.search), hintText: 'Search...'),
         );
+
+        searchFocusNode.requestFocus();
       } else {
         this._searchIcon = new Icon(Icons.search);
         this._appBarTitle = new Text(
