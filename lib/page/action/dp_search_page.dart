@@ -1,16 +1,16 @@
 import 'package:dms_portal/page/main_page.dart';
 import 'package:flutter/material.dart';
 
-class DoSearchPage extends StatefulWidget {
+class DpSearchPage extends StatefulWidget {
   final String title;
 
-  DoSearchPage({Key? key, required this.title}) : super(key: key);
+  DpSearchPage({Key? key, required this.title}) : super(key: key);
 
   @override
-  _DoSearchPage createState() => _DoSearchPage();
+  _DpSearchPage createState() => _DpSearchPage();
 }
 
-class _DoSearchPage extends State<DoSearchPage> {
+class _DpSearchPage extends State<DpSearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +41,7 @@ class _DoSearchPage extends State<DoSearchPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("DO Search Page"),
+            Text("Search Page"),
           ],
         ),
       ),

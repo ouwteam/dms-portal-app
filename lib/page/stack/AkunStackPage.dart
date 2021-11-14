@@ -1,5 +1,4 @@
 import 'package:dms_portal/page/login_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AkunStackPage extends StatefulWidget {
@@ -35,7 +34,15 @@ class _AkunStackPage extends State<AkunStackPage> {
                 children: ListTile.divideTiles(context: context, tiles: [
                   ListTile(
                     title: Text("Profile"),
-                    trailing: Icon(Icons.chevron_right),
+                    trailing: Icon(Icons.person_outline_outlined),
+                  ),
+                  ListTile(
+                    title: Text("Settings"),
+                    trailing: Icon(Icons.settings_outlined),
+                  ),
+                  ListTile(
+                    title: Text("Data Source"),
+                    trailing: Icon(Icons.source_outlined),
                   ),
                   ListTile(
                     title: Text("Logout"),

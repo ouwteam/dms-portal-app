@@ -1,4 +1,6 @@
 import 'package:dms_portal/models/down_payment.dart';
+import 'package:dms_portal/page/action/dp_search_page.dart';
+import 'package:dms_portal/page/dp_detail_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -59,10 +61,10 @@ class _ImportStackPage extends State<ImportStackPage> {
             IconButton(
               onPressed: () {
                 print("clicked");
-                // Navigator.pushAndRemoveUntil(context,
-                //     MaterialPageRoute(builder: (context) {
-                //   return DoSearchPage(title: "Cari Delivery Order");
-                // }), (route) => false);
+                Navigator.pushAndRemoveUntil(context,
+                    MaterialPageRoute(builder: (context) {
+                  return DpSearchPage(title: "Cari Delivery Order");
+                }), (route) => false);
               },
               icon: Icon(
                 Icons.search,
@@ -84,10 +86,10 @@ class _ImportStackPage extends State<ImportStackPage> {
                       tiles: orders.map(
                         (DownPayment downPayment) => ListTile(
                           onTap: () {
-                            // Navigator.pushAndRemoveUntil(context,
-                            //     MaterialPageRoute(builder: (context) {
-                            //   return DoDetailPage(title: "Delivery Order");
-                            // }), (route) => false);
+                            Navigator.pushAndRemoveUntil(context,
+                                MaterialPageRoute(builder: (context) {
+                              return DpDetailPage(title: "Down Payment");
+                            }), (route) => false);
                           },
                           tileColor: orders.indexOf(downPayment) % 2 == 0
                               ? Colors.grey[100]
