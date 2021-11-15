@@ -17,12 +17,13 @@ class _HomeStackPage extends State<HomeStackPage> {
   String? _currentAddress = "";
 
   _getCurrentLocation() async {
-    Position? pos;
     try {
-      pos = await Geolocator.getCurrentPosition(
+      print("geting your coodinate..");
+      _currentPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best,
         forceAndroidLocationManager: true,
       );
+      print("got it!");
     } catch (e) {
       snackAlert(
         context,
@@ -30,19 +31,22 @@ class _HomeStackPage extends State<HomeStackPage> {
         AlertType.error,
       );
 
-      setState(() {
-        _currentAddress = "Not support";
-      });
+      if (this.mounted) {
+        setState(() {
+          _currentAddress = "Not support";
+        });
+      }
 
       return;
     }
 
-    String address = "${pos.latitude},${pos.longitude}";
+    String address =
+        "${_currentPosition!.latitude},${_currentPosition!.longitude}";
     try {
-      print("we get the pos");
+      print("getting your address based on coordinate..");
       List<Placemark> places = await placemarkFromCoordinates(
-        pos.latitude,
-        pos.longitude,
+        _currentPosition!.latitude,
+        _currentPosition!.longitude,
       );
 
       address = [
@@ -52,9 +56,8 @@ class _HomeStackPage extends State<HomeStackPage> {
         places[0].street,
         places[0].postalCode,
       ].join(", ");
+      print("got it!");
     } catch (e) {
-      print(e.toString());
-
       snackAlert(
         context,
         "Your device is not support geocoding system. We show you the coordinates!",
@@ -62,10 +65,12 @@ class _HomeStackPage extends State<HomeStackPage> {
       );
     }
 
-    setState(() {
-      _currentAddress = address;
-      _currentPosition = pos;
-    });
+    if (this.mounted) {
+      setState(() {
+        _currentAddress = address;
+        _currentPosition = _currentPosition;
+      });
+    }
   }
 
   @override
@@ -73,6 +78,12 @@ class _HomeStackPage extends State<HomeStackPage> {
     super.initState();
 
     _getCurrentLocation();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _currentPosition = null;
   }
 
   @override
