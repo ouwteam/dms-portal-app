@@ -33,7 +33,7 @@ class _DpDetailPage extends State<DpDetailPage> {
                   MaterialPageRoute(builder: (context) {
                 return MainPage(
                   title: "Main Page",
-                  pIndex: 1,
+                  pIndex: 2,
                 );
               }), (route) => false);
             },
