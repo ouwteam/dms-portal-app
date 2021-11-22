@@ -1,10 +1,14 @@
+import 'package:dms_portal/common/api.dart';
 import 'package:dms_portal/common/snack_alert.dart';
+import 'package:dms_portal/enitity/ApiResponse.dart';
+import 'package:dms_portal/enitity/Login.dart';
 import 'package:dms_portal/models/data_source.dart';
 import 'package:dms_portal/page/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'dart:math' as math;
 import 'package:geolocator/geolocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key, required this.title}) : super(key: key);
@@ -165,7 +169,7 @@ class _LoginPage extends State<LoginPage> {
           Container(
             height: 40,
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (_username == "") {
                   snackAlert(
                     context,
@@ -190,13 +194,19 @@ class _LoginPage extends State<LoginPage> {
                   AlertType.info,
                 );
 
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) {
-                    return MainPage(title: "Main Page");
-                  }),
-                  (route) => false,
-                );
+                ApiResponse apiResponse = await Api()
+                    .userLogin("kurniawan9411n@gmail.com", "udanup123");
+
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                print("prefs token :");
+                print(prefs.get("token"));
+                // Navigator.pushAndRemoveUntil(
+                //   context,
+                //   MaterialPageRoute(builder: (context) {
+                //     return MainPage(title: "Main Page");
+                //   }),
+                //   (route) => false,
+                // );
               },
               child: Row(
                 children: [
