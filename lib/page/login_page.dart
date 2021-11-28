@@ -188,25 +188,26 @@ class _LoginPage extends State<LoginPage> {
                   return;
                 }
 
-                snackAlert(
-                  context,
-                  "Welcome $_username with source ${_selectedApi?.apiName}",
-                  AlertType.info,
-                );
-
                 ApiResponse apiResponse = await Api()
                     .userLogin("kurniawan9411n@gmail.com", "udanup123");
 
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 print("prefs token :");
                 print(prefs.get("token"));
-                // Navigator.pushAndRemoveUntil(
-                //   context,
-                //   MaterialPageRoute(builder: (context) {
-                //     return MainPage(title: "Main Page");
-                //   }),
-                //   (route) => false,
-                // );
+
+                snackAlert(
+                  context,
+                  "Welcome $_username with source ${_selectedApi?.apiName}",
+                  AlertType.info,
+                );
+
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return MainPage(title: "Main Page");
+                  }),
+                  (route) => false,
+                );
               },
               child: Row(
                 children: [
